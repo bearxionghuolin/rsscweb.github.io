@@ -1,80 +1,186 @@
-# Academic Project Page Template
+# RSSC: A Byte-Level Semantic Communication Method for Visual Information Transmission in Communication-Constrained Remote Sensing Scenarios
 
-> **Update (September 2025)**: This template has been modernized with better design, SEO, and mobile support. For the original version, see the [original-version branch](https://github.com/eliahuhorwitz/Academic-project-page-template/tree/original-version).
+[![Paper](https://img.shields.io/badge/Paper-Under%20Review-blue)](https://github.com/anonymous-rssc/rssc)
+[![Python](https://img.shields.io/badge/Python-3.10%2B-green)](https://www.python.org/)
+[![PyTorch](https://img.shields.io/badge/PyTorch-2.0%2B-orange)](https://pytorch.org/)
+[![License](https://img.shields.io/badge/License-Apache%202.0-lightgrey)](LICENSE)
 
-A clean, responsive template for academic project pages.
+> **TL;DR:** RSSC is a two-stage semantic communication framework that encodes remote sensing images into byte-level textual data and reconstructs them with diffusion models, achieving state-of-the-art compression and reconstruction quality.
 
+---
 
-Example project pages built using this template are:
-- https://horwitz.ai/probex
-- https://vision.huji.ac.il/probegen
-- https://horwitz.ai/mother
-- https://horwitz.ai/spectral_detuning
-- https://vision.huji.ac.il/ladeda
-- https://vision.huji.ac.il/dsire
-- https://horwitz.ai/podd
-- https://dreamix-video-editing.github.io
-- https://horwitz.ai/conffusion
-- https://horwitz.ai/3d_ads/
-- https://vision.huji.ac.il/ssrl_ad
-- https://vision.huji.ac.il/deepsim
+<p align="center">
+  <img src="Images/figure1.svg" width="95%" alt="RSSC System Overview">
+  <br>
+  <em><strong>RSSC System Overview.</strong> Stage One encodes images into textual descriptions and bounding boxes; Stage Two reconstructs images from the transmitted text.</em>
+</p>
 
+---
 
+## 📋 TODO
 
-## Start using the template
-To start using the template click on `Use this Template`.
+This repository is currently under active development. The following items will be released upon paper acceptance:
 
-The template uses html for controlling the content and css for controlling the style. 
-To edit the websites contents edit the `index.html` file. It contains different HTML "building blocks", use whichever ones you need and comment out the rest.  
+- [x] Project page and documentation
+- [ ] Complete source code (Stage One & Stage Two)
+- [ ] Pre-trained model weights
+- [ ] Training datasets and preprocessing scripts
+- [ ] Evaluation scripts and benchmarks
+- [ ] Docker deployment support
 
-**IMPORTANT!** Make sure to replace the `favicon.ico` under `static/images/` with one of your own, otherwise your favicon is going to be a dreambooth image of me.
+> **Note:** The paper is currently under review. Full code and model weights will be released after the review process is complete.
 
-## What's New
+---
 
-- Modern, clean design with better mobile support
-- Improved SEO with proper meta tags and structured data
-- Performance improvements (lazy loading, optimized assets)
-- More Works dropdown
-- Copy button for BibTeX citations
-- Better accessibility
+## 🛠️ Environment Setup
 
-## Components
+### Prerequisites
 
-- Teaser video
-- Image carousel
-- YouTube video embedding
-- Video carousel
-- PDF poster viewer
-- BibTeX citation
+- Python >= 3.10
+- CUDA >= 11.8
+- Git
 
-## Customization
+### Installation
 
-The HTML file has TODO comments showing what to replace:
+```bash
+# 1. Clone the repository
+git clone https://github.com/anonymous-rssc/rssc.git
+cd rssc
 
-- Paper title, authors, institution, conference
-- Links (arXiv, GitHub, etc.)
-- Abstract and descriptions  
-- Videos, images, and PDFs
-- Related works in the dropdown
-- Meta tags for SEO and social sharing
+# 2. Create conda environment
+conda create -n rssc python=3.10 -y
+conda activate rssc
 
-### Meta Tags
-The template includes meta tags for better search engine visibility and social media sharing. These appear in the `<head>` section and help with:
-- Google Scholar indexing
-- Social media previews (Twitter, Facebook, LinkedIn)
-- Search engine optimization
+# 3. Install dependencies
+pip install -r requirements.txt
+```
 
-Create a 1200x630px social preview image at `static/images/social_preview.png`.
+---
 
-## Tips
+## 🚀 Usage
 
-- Compress images with [TinyPNG](https://tinypng.com)
-- Use YouTube for large videos (>10MB)  
-- Replace the favicon in `static/images/`
-- Works with GitHub Pages
+### Stage One: Semantic Encoding
 
-## Acknowledgments
-Parts of this project page were adopted from the [Nerfies](https://nerfies.github.io/) page.
+Stage One extracts key target information (bounding boxes + categories) and generates global textual descriptions using a fine-tuned MLLM.
 
-## Website License
-<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
+#### Inference
+
+**Target Detection:**
+```bash
+python stage_one/detect_infer.py \
+    --image_path "path/to/image.jpg" \
+    --checkpoint "path/to/stage_one_checkpoint" \
+    --output_dir "./outputs/detection"
+```
+
+**Global Description Generation:**
+```bash
+python stage_one/describe_infer.py \
+    --image_path "path/to/image.jpg" \
+    --detection_result "./outputs/detection/result.json" \
+    --checkpoint "path/to/stage_one_checkpoint" \
+    --output_path "./outputs/description.txt"
+```
+
+#### Training
+
+```bash
+# Multi-GPU (recommended)
+deepspeed --num_gpus=4 stage_one/train.py \
+    --deepspeed configs/ds_config_stage1.json \
+    --model_name_or_path "Qwen/Qwen2.5-VL-7B-Instruct" \
+    --dataset_path "path/to/rsod_dataset" \
+    --output_dir "./checkpoints/stage_one"
+```
+
+---
+
+### Stage Two: Image Reconstruction
+
+Stage Two reconstructs remote sensing images from textual descriptions and bounding box information using Stable Diffusion with BTFusion.
+
+#### Inference
+
+```bash
+python stage_two/reconstruct.py \
+    --description_path "./outputs/description.txt" \
+    --bbox_path "./outputs/detection/result.json" \
+    --checkpoint "path/to/stage_two_checkpoint" \
+    --output_path "./outputs/reconstructed.jpg"
+```
+
+#### Training
+
+```bash
+# Multi-GPU (recommended)
+deepspeed --num_gpus=4 stage_two/train.py \
+    --deepspeed configs/ds_config_stage2.json \
+    --pretrained_model_name_or_path "runwayml/stable-diffusion-v1-5" \
+    --dataset_path "path/to/rsod_dataset" \
+    --output_dir "./checkpoints/stage_two"
+```
+
+---
+
+## 📁 Project Structure
+
+```
+rssc/
+├── stage_one/                  # Stage One: Semantic Encoding
+│   ├── train.py               # Training script with sLoRA
+│   ├── detect_infer.py        # Target detection inference
+│   ├── describe_infer.py      # Description generation inference
+│   └── model/                 # Model definitions
+│
+├── stage_two/                  # Stage Two: Image Reconstruction
+│   ├── train.py               # Training script with BTFusion
+│   ├── reconstruct.py         # Reconstruction inference
+│   └── model/                 # Model definitions
+│
+├── configs/                    # Configuration files
+│   ├── ds_config_stage1.json
+│   └── ds_config_stage2.json
+│
+├── requirements.txt
+├── README.md
+└── LICENSE
+```
+
+---
+
+## 🎯 Results
+
+### Stage One: Target Detection
+
+| Dataset | Precision | Recall | F1-Score |
+|---------|-----------|--------|----------|
+| RSOD    | 0.9899    | 0.9423 | **0.9655** |
+| RescueNet | 0.9402  | 0.6995 | **0.8022** |
+
+### Stage Two: Image Reconstruction
+
+| Dataset   | FID ↓  | SSIM ↑  |
+|-----------|--------|---------|
+| RSOD      | 42.87  | 0.1482  |
+| RescueNet | 40.79  | 0.1513  |
+
+---
+
+## 📄 License
+
+This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENSE) file for details.
+
+---
+
+## 🤝 Acknowledgements
+
+This work builds upon the following excellent open-source projects:
+
+- [Qwen2.5-VL](https://github.com/QwenLM/Qwen2.5-VL) - Multimodal large language model
+- [InstanceDiffusion](https://github.com/frank-xwang/InstanceDiffusion.git) - Instance-level controllable image generation
+
+---
+
+<p align="center">
+  <em>Built with ❤️ for the remote sensing community</em>
+</p>
