@@ -487,10 +487,10 @@
           <h2 class="title is-3 section-title">Abstract</h2>
           <div class="section-divider"></div>
           <p class="abstract-text">
-            Compared with conventional visual transmission, remote sensing image transmission faces critical challenges such as long satellite downlink latency and interrupted UAV aerial communication in post-disaster scenarios. To address these issues, this paper proposes a novel semantic communication method for communication-constrained remote sensing, named <strong>RSSC</strong> (Remote Sensing Semantic Communication). RSSC adopts a <strong>two-stage framework</strong>. In Stage One, a sLoRA strategy is designed to lightly fine-tune the multimodal large language model for accurate key target detection, yielding bounding boxes and textual descriptions; it further generates instance-aware global descriptions using zero-shot capability. In Stage Two, a diffusion model is adopted to reconstruct remote sensing images from the transmitted text and target positions. By encoding images into compact textual data, RSSC reduces transmission volume to the <strong>byte level</strong> with extremely low overhead.
+            Remote sensing image transmission faces critical challenges including long satellite downlink latency and interrupted UAV aerial communication in post-disaster scenarios. To address these, this paper introduces <strong>RSSC</strong> (Remote Sensing Semantic Communication), a <strong>two-stage semantic communication framework</strong>. In Stage One, a sLoRA strategy lightly fine-tunes a multimodal large language model for accurate key target detection, producing bounding boxes and textual descriptions, while zero-shot capability is used to generate instance-aware global descriptions. In Stage Two, a diffusion model reconstructs the remote sensing image from the received text and spatial layout. By representing images as compact textual data, RSSC reduces transmission volume to the <strong>byte level</strong>.
           </p>
           <p class="abstract-text" style="margin-top: 1rem;">
-            Extensive experiments on <strong>RSOD</strong> and <strong>RescueNet</strong> datasets validate the effectiveness of RSSC. On RSOD, Stage One achieves an F1-score of <strong>0.9655</strong>, and the reconstruction results are <strong>42.87 FID</strong> and <strong>0.1482 SSIM</strong>. On RescueNet, the F1-score is <strong>0.8022</strong>, with <strong>40.79 FID</strong> and <strong>0.1513 SSIM</strong>. Based on a systematic review of existing works, RSSC achieves the <strong>highest information compression ratio</strong> among remote sensing image semantic communication methods, and delivers state-of-the-art reconstruction quality among layout-guided remote sensing image generation approaches.
+            Experiments on <strong>RSOD</strong> and <strong>RescueNet</strong> datasets validate RSSC's effectiveness. On RSOD, Stage One achieves F1 = <strong>0.9655</strong>; Stage Two yields FID = <strong>42.87</strong> and SSIM = <strong>0.1482</strong>. On RescueNet, F1 = <strong>0.8022</strong>, FID = <strong>40.79</strong>, SSIM = <strong>0.1513</strong>. Among existing remote sensing semantic communication methods, RSSC achieves the <strong>highest information compression ratio</strong>, and delivers state-of-the-art reconstruction quality among layout-guided remote sensing image generation approaches.
           </p>
         </div>
       </div>
@@ -507,7 +507,7 @@
           <div class="teaser-figure">
             <img src="./Images/figure1.svg" alt="RSSC System Overview" />
             <p class="figure-caption">
-              <strong>RSSC System Overview.</strong> The part enclosed by the red dashed box is the textual information to be transmitted. Throughout the semantic communication process, only descriptive text and bounding box information need to be transmitted, compressing the data volume to the byte level.
+              <strong>RSSC System Overview.</strong> The region enclosed by the red dashed box represents the information to be transmitted. Only text descriptions and bounding box coordinates are sent, reducing the transmitted data volume to the byte level.
             </p>
           </div>
         </div>
@@ -528,14 +528,14 @@
             <div class="contrib-icon c1"><i class="fas fa-compress-arrows-alt"></i></div>
             <div class="contrib-text">
               <h4>Byte-Level Semantic Compression</h4>
-              <p>RSSC encodes remote sensing images into compact textual data (descriptions + bounding boxes), achieving the highest compression ratio among remote sensing semantic communication methods. Only text is transmitted—no visual features or thumbnails.</p>
+              <p>The entire remote sensing image is encoded as textual data — descriptions plus bounding boxes — with no visual features or thumbnails transmitted. This yields the highest information compression ratio among existing remote sensing semantic communication methods.</p>
             </div>
           </div>
           <div class="contrib-item">
             <div class="contrib-icon c2"><i class="fas fa-brain"></i></div>
             <div class="contrib-text">
               <h4>sLoRA Fine-Tuning Strategy</h4>
-              <p>A selective LoRA approach that fine-tunes only 0.1% of MLLM parameters (vision encoder layers 24-31, all connector layers, and top LLM layers), enabling efficient adaptation of Qwen2.5-VL-7B to remote sensing with minimal training cost.</p>
+              <p>A selective LoRA strategy that applies adapters only to vision encoder layers 24–31, all connector layers, and the top LLM layers — totalling 0.1% of Qwen2.5-VL-7B parameters — enabling lightweight yet effective adaptation to remote sensing target detection.</p>
             </div>
           </div>
         </div>
@@ -544,14 +544,14 @@
             <div class="contrib-icon c3"><i class="fas fa-layer-group"></i></div>
             <div class="contrib-text">
               <h4>BTFusion Module</h4>
-              <p>A bounding box-text fusion mechanism that encodes spatial information via Fourier embedding and fuses it with Stable Diffusion's visual features through self-attention, enabling reconstruction from text and box coordinates alone.</p>
+              <p>Bounding box coordinates are encoded via Fourier positional embedding, then fused with Stable Diffusion's intermediate visual features through self-attention, enabling image reconstruction from text and bounding box information alone.</p>
             </div>
           </div>
           <div class="contrib-item">
             <div class="contrib-icon c4"><i class="fas fa-satellite"></i></div>
             <div class="contrib-text">
               <h4>Zero-Shot Global Description</h4>
-              <p>Leverages MLLM's zero-shot capability to generate instance-aware global descriptions without additional training, balancing key target information with scene context for comprehensive semantic representation.</p>
+              <p>Instance detection results are used to construct a structured prompt, through which the MLLM generates a global, instance-aware scene description via zero-shot capability — without any additional description-specific training.</p>
             </div>
           </div>
         </div>
@@ -566,7 +566,7 @@
         <h2 class="title is-3 section-title">Method</h2>
         <div class="section-divider"></div>
         <p style="color: var(--text-muted); margin-bottom: 2rem; font-size: 0.97rem;">
-          RSSC is a two-stage semantic communication framework. Stage One handles encoding at the transmission end; Stage Two handles reconstruction at the receiving end.
+          RSSC is a two-stage semantic communication framework. Stage One handles semantic encoding at the transmission end; Stage Two handles image reconstruction at the receiving end.
         </p>
       </div>
 
@@ -576,13 +576,13 @@
             <span class="stage-badge stage1">Stage One · Encoder (Transmission End)</span>
             <h3><i class="fas fa-search" style="color:#1d4ed8;margin-right:8px;"></i>MLLM-based Semantic Encoding</h3>
             <p>
-              A multimodal large language model (Qwen2.5-VL-7B) is fine-tuned via the proposed <strong>sLoRA</strong> strategy to master remote sensing target detection. For each input image:
+              Qwen2.5-VL-7B, fine-tuned with <strong>sLoRA</strong>, performs remote sensing target detection on the input image:
             </p>
             <ul>
-              <li>Detect key targets → output bounding boxes + category labels</li>
-              <li>Construct structured instance prompts</li>
-              <li>Generate a global, instance-level textual description via zero-shot prompting</li>
-              <li>Output: compact text (~byte level) ready for transmission</li>
+              <li>Detect key targets → bounding boxes + category labels</li>
+              <li>Construct structured instance prompts from detection results</li>
+              <li>Generate instance-aware global description via zero-shot capability</li>
+              <li>Transmit compact textual payload at byte scale</li>
             </ul>
           </div>
         </div>
@@ -591,13 +591,13 @@
             <span class="stage-badge stage2">Stage Two · Decoder (Receiving End)</span>
             <h3><i class="fas fa-image" style="color:#6d28d9;margin-right:8px;"></i>Diffusion-based Image Reconstruction</h3>
             <p>
-              A pre-trained <strong>Stable Diffusion</strong> model with the novel <strong>BTFusion</strong> module reconstructs the remote sensing image from the received text and bounding box information:
+              A pre-trained <strong>Stable Diffusion</strong> model, augmented with the <strong>BTFusion</strong> module, reconstructs the remote sensing image from the received text and bounding box information:
             </p>
             <ul>
-              <li>BTFusion encodes bounding box positions into spatial feature tokens</li>
-              <li>Bounding box features are concatenated with SD's visual features</li>
-              <li>Self-attention mechanism fuses positional and visual context</li>
-              <li>Output: high-quality remote sensing image reconstruction</li>
+              <li>Bounding box coordinates encoded via Fourier positional embedding</li>
+              <li>Spatial features concatenated with SD's intermediate visual features</li>
+              <li>Self-attention fuses positional and visual context</li>
+              <li>Denoising produces the reconstructed remote sensing image</li>
             </ul>
           </div>
         </div>
@@ -608,13 +608,13 @@
         <div class="column is-half">
           <div class="fig-card">
             <img src="./Images/figure3.svg" alt="sLoRA Fine-tuning Strategy"/>
-            <p class="fig-caption">The sLoRA fine-tuning strategy — selectively applying LoRA to visual encoder, connector, and language layers for lightweight MLLM adaptation.</p>
+            <p class="fig-caption">sLoRA selectively inserts LoRA adapters into deep visual encoder layers, the full connector, and the LLM top layers, leaving the rest of the model frozen.</p>
           </div>
         </div>
         <div class="column is-half">
           <div class="fig-card">
             <img src="./Images/figure4.svg" alt="BTFusion Module Architecture"/>
-            <p class="fig-caption">The BTFusion module — encoding bounding box features and concatenating them with Stable Diffusion's visual features for spatially faithful reconstruction.</p>
+            <p class="fig-caption">BTFusion converts bounding box coordinates into Fourier-encoded spatial tokens, merges them with UNet feature maps, and applies self-attention to produce layout-aware denoising.</p>
           </div>
         </div>
       </div>
@@ -742,7 +742,7 @@
           <div class="fig-card">
             <img src="./Images/figure6.svg" alt="Qualitative reconstruction results"/>
             <p class="fig-caption">
-              Qualitative reconstruction results on RSOD (top) and RescueNet (bottom) datasets. RSSC accurately identifies and locates key targets and provides a faithful global description, enabling high-quality image reconstruction at the receiving end.
+              Side-by-side reconstruction examples on RSOD (top rows) and RescueNet (bottom rows). Objects are correctly localised and the global scene texture is well-preserved, despite the input being pure text.
             </p>
           </div>
         </div>
@@ -758,10 +758,10 @@
           <h2 class="title is-3 section-title">Conclusion</h2>
           <div class="section-divider"></div>
           <p style="font-size:1.02rem;line-height:1.85;color:#334155;text-align:justify;">
-            This work designs an efficient semantic communication method for remote sensing visual information — <strong>RSSC</strong>. Stage One of RSSC encodes remote sensing visual information into descriptive text and bounding box text, while Stage Two reconstructs remote sensing visual information with high quality based on such information, <strong>compressing the volume of transmitted information to the byte level</strong>, which has extensive application value in remote sensing scenarios with communication difficulties (satellite downlink, post-disaster UAV, etc.).
+            This work presents <strong>RSSC</strong>, an efficient semantic communication method for remote sensing visual information. Stage One encodes remote sensing imagery into descriptive text and bounding box coordinates; Stage Two reconstructs the visual content with high quality from this information, reducing the transmitted data to the <strong>byte level</strong>. This offers broad application potential in remote sensing scenarios with communication limitations, such as satellite downlinks and post-disaster UAV operations.
           </p>
           <p style="font-size:1.02rem;line-height:1.85;color:#334155;text-align:justify;margin-top:1rem;">
-            In terms of quantitative metrics, RSSC achieves state-of-the-art reconstruction quality among layout-guided remote sensing image generation methods, while achieving the highest information compression ratio among remote sensing image semantic communication methods. The GPU memory requirement (~9.2 GB after INT8 quantization) is well within the capacity of modern edge computing platforms deployed on satellites and professional UAVs, demonstrating <strong>complete actual deployment capability and application value</strong>.
+            In quantitative evaluation, RSSC achieves state-of-the-art reconstruction quality among layout-guided remote sensing image generation methods, and the highest information compression ratio among remote sensing semantic communication methods. With INT8 quantization, Stage One requires approximately 9.2 GB GPU memory — within the range of modern edge computing platforms on satellites and professional UAVs — indicating practical deployment potential.
           </p>
         </div>
       </div>
