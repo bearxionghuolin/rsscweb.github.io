@@ -431,7 +431,185 @@
 
   <main id="main-content">
 
-  <!-- ==================== HERO ==================== -->
+  <!-- ==================== COMING SOON PLACEHOLDER ==================== -->
+  <section id="coming-soon-section" style="
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #0a0f1e;
+    position: relative;
+    overflow: hidden;
+  ">
+    <!-- Animated background grid -->
+    <div style="
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(26,86,219,0.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(26,86,219,0.08) 1px, transparent 1px);
+      background-size: 48px 48px;
+      animation: gridMove 8s linear infinite;
+    "></div>
+    <!-- Glow blobs -->
+    <div style="position:absolute;top:15%;left:10%;width:360px;height:360px;background:radial-gradient(circle,rgba(26,86,219,0.18),transparent 70%);border-radius:50%;animation:pulse 4s ease-in-out infinite;"></div>
+    <div style="position:absolute;bottom:15%;right:10%;width:280px;height:280px;background:radial-gradient(circle,rgba(124,58,237,0.15),transparent 70%);border-radius:50%;animation:pulse 5s ease-in-out infinite 1s;"></div>
+
+    <style>
+      @keyframes gridMove { from { background-position: 0 0; } to { background-position: 0 48px; } }
+      @keyframes pulse { 0%,100%{transform:scale(1);opacity:.7;} 50%{transform:scale(1.15);opacity:1;} }
+      @keyframes fadeUp { from{opacity:0;transform:translateY(28px);} to{opacity:1;transform:translateY(0);} }
+      @keyframes blink { 0%,100%{opacity:1;} 50%{opacity:0;} }
+      @keyframes orbit {
+        from { transform: rotate(0deg) translateX(52px) rotate(0deg); }
+        to   { transform: rotate(360deg) translateX(52px) rotate(-360deg); }
+      }
+      .cs-tag {
+        display: inline-block;
+        background: rgba(26,86,219,0.18);
+        border: 1px solid rgba(96,165,250,0.35);
+        color: #93c5fd;
+        border-radius: 20px;
+        padding: 4px 16px;
+        font-size: 0.82rem;
+        font-weight: 600;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        margin: 4px;
+        animation: fadeUp .6s ease both;
+      }
+      .cs-orbit-ring {
+        position: relative;
+        width: 120px; height: 120px;
+        margin: 0 auto 2.5rem;
+      }
+      .cs-orbit-ring .center-icon {
+        position: absolute; inset: 0;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 2.4rem; color: #60a5fa;
+        filter: drop-shadow(0 0 12px rgba(96,165,250,.7));
+      }
+      .cs-orbit-ring .dot {
+        position: absolute; top: 50%; left: 50%;
+        width: 10px; height: 10px;
+        background: #818cf8;
+        border-radius: 50%;
+        margin: -5px 0 0 -5px;
+        box-shadow: 0 0 8px rgba(129,140,248,.8);
+        animation: orbit 3s linear infinite;
+      }
+      .cs-orbit-ring .dot:nth-child(3) { animation-delay: -1s; background:#34d399; box-shadow:0 0 8px rgba(52,211,153,.8); }
+      .cs-orbit-ring .dot:nth-child(4) { animation-delay: -2s; background:#f472b6; box-shadow:0 0 8px rgba(244,114,182,.8); }
+      .cs-title {
+        font-size: 2.6rem;
+        font-weight: 800;
+        color: #f1f5f9;
+        line-height: 1.2;
+        animation: fadeUp .5s .1s ease both;
+      }
+      .cs-title .accent { color: #60a5fa; }
+      .cs-subtitle {
+        font-size: 1.05rem;
+        color: #94a3b8;
+        margin-top: .8rem;
+        line-height: 1.7;
+        animation: fadeUp .5s .2s ease both;
+      }
+      .cs-notice {
+        margin-top: 2.2rem;
+        background: rgba(255,255,255,0.04);
+        border: 1px solid rgba(255,255,255,0.1);
+        border-left: 4px solid #60a5fa;
+        border-radius: 10px;
+        padding: 1.1rem 1.4rem;
+        color: #cbd5e1;
+        font-size: 0.97rem;
+        line-height: 1.75;
+        text-align: left;
+        animation: fadeUp .5s .3s ease both;
+      }
+      .cs-notice strong { color: #93c5fd; }
+      .cs-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 2rem;
+        padding: 0.7rem 1.6rem;
+        background: linear-gradient(135deg, #1e293b, #0f172a);
+        border: 1px solid rgba(96,165,250,0.4);
+        border-radius: 8px;
+        color: #e2e8f0 !important;
+        font-weight: 600;
+        font-size: 0.95rem;
+        text-decoration: none;
+        transition: all .2s;
+        animation: fadeUp .5s .4s ease both;
+      }
+      .cs-btn:hover {
+        background: linear-gradient(135deg, #1e3a6e, #1042b0);
+        border-color: #60a5fa;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(26,86,219,.4);
+        color: #fff !important;
+      }
+      .cs-cursor { animation: blink 1s step-end infinite; }
+    </style>
+
+    <div style="position:relative;z-index:10;text-align:center;max-width:660px;padding:2rem 1.5rem;">
+
+      <!-- Orbit animation -->
+      <div class="cs-orbit-ring">
+        <div class="center-icon"><i class="fas fa-satellite-dish"></i></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+      </div>
+
+      <!-- Title -->
+      <h1 class="cs-title">
+        <span class="accent">RSSC</span> Project Page
+      </h1>
+
+      <!-- Subtitle -->
+      <p class="cs-subtitle">
+        Byte-Level Semantic Communication for Remote Sensing
+      </p>
+
+      <!-- Tags -->
+      <div style="margin-top:1.2rem;animation:fadeUp .5s .15s ease both;">
+        <span class="cs-tag">Semantic Communication</span>
+        <span class="cs-tag">Remote Sensing</span>
+        <span class="cs-tag">MLLM</span>
+        <span class="cs-tag">Diffusion Model</span>
+      </div>
+
+      <!-- Notice -->
+      <div class="cs-notice">
+        <strong>🔒 Page details are temporarily hidden.</strong><br>
+        This paper is currently <strong>under review</strong>. To avoid plagiarism detection overlap, detailed content will be published once the paper enters the formal review process.<br><br>
+        In the meantime, you can explore the open-source code repository below.
+      </div>
+
+      <!-- GitHub Button -->
+      <div>
+        <a href="https://github.com/bear1008611-ui/rssc" target="_blank" class="cs-btn">
+          <i class="fab fa-github"></i>
+          View Code on GitHub
+        </a>
+      </div>
+
+    </div>
+  </section>
+  <!-- ==================== END COMING SOON ==================== -->
+
+
+  <!--
+  ================================================================
+  ORIGINAL PAGE CONTENT — COMMENTED OUT
+  (Temporarily hidden to avoid plagiarism detection overlap during peer review.
+   Uncomment to restore the full project page after acceptance.)
+  ================================================================
+
+  ==================== HERO ====================
   <section class="hero is-primary-gradient">
     <div class="hero-body" style="padding: 3.5rem 1.5rem 2.5rem;">
       <div class="container is-max-desktop">
@@ -449,7 +627,7 @@
 
             <div class="anonymous-badge">
               <i class="fas fa-user-secret"></i>
-              Anonymous Submission — Author information withheld for review
+              Anonymous Submission - Author information withheld for review
             </div>
 
             <div class="keyword-tags" style="margin-top:1.4rem;">
@@ -462,7 +640,6 @@
               <span class="keyword-tag">UAV / Satellite</span>
             </div>
 
-            <!-- Action Buttons -->
             <div class="publication-links" style="margin-top:2rem;">
               <span class="link-block">
                 <a href="https://github.com/bear1008611-ui/rssc" target="_blank"
@@ -479,7 +656,7 @@
     </div>
   </section>
 
-  <!-- ==================== ABSTRACT ==================== -->
+  ==================== ABSTRACT ====================
   <section class="section abstract-section">
     <div class="container is-max-desktop">
       <div class="columns is-centered has-text-centered">
@@ -487,17 +664,17 @@
           <h2 class="title is-3 section-title">Abstract</h2>
           <div class="section-divider"></div>
           <p class="abstract-text">
-            Remote sensing image transmission faces critical challenges including long satellite downlink latency and interrupted UAV aerial communication in post-disaster scenarios. To address these, this paper introduces <strong>RSSC</strong> (Remote Sensing Semantic Communication), a <strong>two-stage semantic communication framework</strong>. In Stage One, a sLoRA strategy lightly fine-tunes a multimodal large language model for accurate key target detection, producing bounding boxes and textual descriptions, while zero-shot capability is used to generate instance-aware global descriptions. In Stage Two, a diffusion model reconstructs the remote sensing image from the received text and spatial layout. By representing images as compact textual data, RSSC reduces transmission volume to the <strong>byte level</strong>.
+            Remote sensing image transmission faces critical challenges including long satellite downlink latency and interrupted UAV aerial communication in post-disaster scenarios. To address these, this paper introduces RSSC (Remote Sensing Semantic Communication), a two-stage semantic communication framework. In Stage One, a sLoRA strategy lightly fine-tunes a multimodal large language model for accurate key target detection, producing bounding boxes and textual descriptions, while zero-shot capability is used to generate instance-aware global descriptions. In Stage Two, a diffusion model reconstructs the remote sensing image from the received text and spatial layout. By representing images as compact textual data, RSSC reduces transmission volume to the byte level.
           </p>
           <p class="abstract-text" style="margin-top: 1rem;">
-            Experiments on <strong>RSOD</strong> and <strong>RescueNet</strong> datasets validate RSSC's effectiveness. On RSOD, Stage One achieves F1 = <strong>0.9655</strong>; Stage Two yields FID = <strong>42.87</strong> and SSIM = <strong>0.1482</strong>. On RescueNet, F1 = <strong>0.8022</strong>, FID = <strong>40.79</strong>, SSIM = <strong>0.1513</strong>. Among existing remote sensing semantic communication methods, RSSC achieves the <strong>highest information compression ratio</strong>, and delivers state-of-the-art reconstruction quality among layout-guided remote sensing image generation approaches.
+            Experiments on RSOD and RescueNet datasets validate RSSC's effectiveness. On RSOD, Stage One achieves F1 = 0.9655; Stage Two yields FID = 42.87 and SSIM = 0.1482. On RescueNet, F1 = 0.8022, FID = 40.79, SSIM = 0.1513. Among existing remote sensing semantic communication methods, RSSC achieves the highest information compression ratio, and delivers state-of-the-art reconstruction quality among layout-guided remote sensing image generation approaches.
           </p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ==================== TEASER FIGURE ==================== -->
+  ==================== TEASER FIGURE ====================
   <section class="section teaser-section">
     <div class="container is-max-desktop">
       <div class="columns is-centered has-text-centered">
@@ -507,7 +684,7 @@
           <div class="teaser-figure">
             <img src="./Images/figure1.svg" alt="RSSC System Overview" />
             <p class="figure-caption">
-              <strong>RSSC System Overview.</strong> The region enclosed by the red dashed box represents the information to be transmitted. Only text descriptions and bounding box coordinates are sent, reducing the transmitted data volume to the byte level.
+              RSSC System Overview. The region enclosed by the red dashed box represents the information to be transmitted. Only text descriptions and bounding box coordinates are sent, reducing the transmitted data volume to the byte level.
             </p>
           </div>
         </div>
@@ -515,7 +692,7 @@
     </div>
   </section>
 
-  <!-- ==================== KEY CONTRIBUTIONS ==================== -->
+  ==================== KEY CONTRIBUTIONS ====================
   <section class="section contributions-section">
     <div class="container is-max-desktop">
       <div class="has-text-centered">
@@ -528,14 +705,14 @@
             <div class="contrib-icon c1"><i class="fas fa-compress-arrows-alt"></i></div>
             <div class="contrib-text">
               <h4>Byte-Level Semantic Compression</h4>
-              <p>The entire remote sensing image is encoded as textual data — descriptions plus bounding boxes — with no visual features or thumbnails transmitted. This yields the highest information compression ratio among existing remote sensing semantic communication methods.</p>
+              <p>The entire remote sensing image is encoded as textual data - descriptions plus bounding boxes - with no visual features or thumbnails transmitted. This yields the highest information compression ratio among existing remote sensing semantic communication methods.</p>
             </div>
           </div>
           <div class="contrib-item">
             <div class="contrib-icon c2"><i class="fas fa-brain"></i></div>
             <div class="contrib-text">
               <h4>sLoRA Fine-Tuning Strategy</h4>
-              <p>A selective LoRA strategy that applies adapters only to vision encoder layers 24–31, all connector layers, and the top LLM layers — totalling 0.1% of Qwen2.5-VL-7B parameters — enabling lightweight yet effective adaptation to remote sensing target detection.</p>
+              <p>A selective LoRA strategy that applies adapters only to vision encoder layers 24-31, all connector layers, and the top LLM layers - totalling 0.1% of Qwen2.5-VL-7B parameters - enabling lightweight yet effective adaptation to remote sensing target detection.</p>
             </div>
           </div>
         </div>
@@ -551,7 +728,7 @@
             <div class="contrib-icon c4"><i class="fas fa-satellite"></i></div>
             <div class="contrib-text">
               <h4>Zero-Shot Global Description</h4>
-              <p>Instance detection results are used to construct a structured prompt, through which the MLLM generates a global, instance-aware scene description via zero-shot capability — without any additional description-specific training.</p>
+              <p>Instance detection results are used to construct a structured prompt, through which the MLLM generates a global, instance-aware scene description via zero-shot capability - without any additional description-specific training.</p>
             </div>
           </div>
         </div>
@@ -559,7 +736,7 @@
     </div>
   </section>
 
-  <!-- ==================== METHOD ==================== -->
+  ==================== METHOD ====================
   <section class="section method-section">
     <div class="container is-max-desktop">
       <div class="has-text-centered">
@@ -569,17 +746,14 @@
           RSSC is a two-stage semantic communication framework. Stage One handles semantic encoding at the transmission end; Stage Two handles image reconstruction at the receiving end.
         </p>
       </div>
-
       <div class="columns is-variable is-4">
         <div class="column">
           <div class="stage-card">
-            <span class="stage-badge stage1">Stage One · Encoder (Transmission End)</span>
+            <span class="stage-badge stage1">Stage One - Encoder (Transmission End)</span>
             <h3><i class="fas fa-search" style="color:#1d4ed8;margin-right:8px;"></i>MLLM-based Semantic Encoding</h3>
-            <p>
-              Qwen2.5-VL-7B, fine-tuned with <strong>sLoRA</strong>, performs remote sensing target detection on the input image:
-            </p>
+            <p>Qwen2.5-VL-7B, fine-tuned with sLoRA, performs remote sensing target detection on the input image:</p>
             <ul>
-              <li>Detect key targets → bounding boxes + category labels</li>
+              <li>Detect key targets: bounding boxes + category labels</li>
               <li>Construct structured instance prompts from detection results</li>
               <li>Generate instance-aware global description via zero-shot capability</li>
               <li>Transmit compact textual payload at byte scale</li>
@@ -588,11 +762,9 @@
         </div>
         <div class="column">
           <div class="stage-card">
-            <span class="stage-badge stage2">Stage Two · Decoder (Receiving End)</span>
+            <span class="stage-badge stage2">Stage Two - Decoder (Receiving End)</span>
             <h3><i class="fas fa-image" style="color:#6d28d9;margin-right:8px;"></i>Diffusion-based Image Reconstruction</h3>
-            <p>
-              A pre-trained <strong>Stable Diffusion</strong> model, augmented with the <strong>BTFusion</strong> module, reconstructs the remote sensing image from the received text and bounding box information:
-            </p>
+            <p>A pre-trained Stable Diffusion model, augmented with the BTFusion module, reconstructs the remote sensing image from the received text and bounding box information:</p>
             <ul>
               <li>Bounding box coordinates encoded via Fourier positional embedding</li>
               <li>Spatial features concatenated with SD's intermediate visual features</li>
@@ -602,8 +774,6 @@
           </div>
         </div>
       </div>
-
-      <!-- Pipeline Architecture Figures -->
       <div class="columns is-variable is-3 is-multiline" style="margin-top: 2rem;">
         <div class="column is-half">
           <div class="fig-card">
@@ -621,136 +791,21 @@
     </div>
   </section>
 
-  <!-- ==================== EXPERIMENTAL RESULTS ==================== -->
+  ==================== EXPERIMENTAL RESULTS ====================
   <section class="section results-section">
     <div class="container is-max-desktop">
       <div class="has-text-centered">
         <h2 class="title is-3 section-title">Experimental Results</h2>
         <div class="section-divider"></div>
       </div>
-
-      <!-- Stage One Results -->
-      <h3 style="font-size:1.2rem;font-weight:700;color:var(--text-dark);margin-bottom:0.6rem;">
-        <span style="background:#dbeafe;color:#1d4ed8;border-radius:6px;padding:2px 10px;font-size:0.8rem;margin-right:8px;">Stage One</span>
-        Target Detection Performance (F1-Score)
-      </h3>
-      <div class="result-table-wrap" style="margin-bottom: 2.5rem;">
-        <table class="result-table">
-          <thead>
-            <tr>
-              <th colspan="4" style="background:#1e3a5f;font-size:0.82rem;letter-spacing:0.04em;">RSOD Dataset</th>
-            </tr>
-            <tr>
-              <th>Method</th>
-              <th>Precision ↑</th>
-              <th>Recall ↑</th>
-              <th>F1-Score ↑</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>YOLOv10</td>
-              <td>0.9533</td>
-              <td>0.9231</td>
-              <td>0.9379</td>
-            </tr>
-            <tr class="highlight-row">
-              <td><strong>This work</strong></td>
-              <td class="best-value">0.9899</td>
-              <td class="best-value">0.9423</td>
-              <td class="best-value">0.9655</td>
-            </tr>
-          </tbody>
-          <thead>
-            <tr>
-              <th colspan="4" style="background:#1e3a5f;font-size:0.82rem;letter-spacing:0.04em;">RescueNet Dataset</th>
-            </tr>
-            <tr>
-              <th>Method</th>
-              <th>Precision ↑</th>
-              <th>Recall ↑</th>
-              <th>F1-Score ↑</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>YOLOv10</td>
-              <td>0.7253</td>
-              <td>0.7302</td>
-              <td>0.7277</td>
-            </tr>
-            <tr class="highlight-row">
-              <td><strong>This work</strong></td>
-              <td class="best-value">0.9402</td>
-              <td class="best-value">0.6995</td>
-              <td class="best-value">0.8022</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <!-- Stage Two Results -->
-      <h3 style="font-size:1.2rem;font-weight:700;color:var(--text-dark);margin-bottom:0.6rem;">
-        <span style="background:#ede9fe;color:#6d28d9;border-radius:6px;padding:2px 10px;font-size:0.8rem;margin-right:8px;">Stage Two</span>
-        Image Reconstruction Quality vs. State-of-the-Art
-      </h3>
-      <div class="result-table-wrap" style="margin-bottom: 2rem;">
-        <table class="result-table">
-          <thead>
-            <tr>
-              <th>Method</th>
-              <th>Dataset</th>
-              <th>FID ↓</th>
-              <th>SSIM ↑</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>MMO-IG</td>
-              <td>RSOD</td>
-              <td>45.39</td>
-              <td>0.1176</td>
-            </tr>
-            <tr>
-              <td>MMO-IG</td>
-              <td>RescueNet</td>
-              <td>51.21</td>
-              <td>0.1221</td>
-            </tr>
-            <tr class="highlight-row">
-              <td><strong>This work (RSSC)</strong></td>
-              <td>RSOD</td>
-              <td class="best-value">42.87</td>
-              <td class="best-value">0.1482</td>
-            </tr>
-            <tr class="highlight-row">
-              <td><strong>This work (RSSC)</strong></td>
-              <td>RescueNet</td>
-              <td class="best-value">40.79</td>
-              <td class="best-value">0.1513</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <!-- Qualitative Results -->
-      <h3 style="font-size:1.2rem;font-weight:700;color:var(--text-dark);margin:2rem 0 0.8rem;">
-        Qualitative Results
-      </h3>
-      <div class="columns is-variable is-3 is-multiline">
-        <div class="column is-full">
-          <div class="fig-card">
-            <img src="./Images/figure6.svg" alt="Qualitative reconstruction results"/>
-            <p class="fig-caption">
-              Side-by-side reconstruction examples on RSOD (top rows) and RescueNet (bottom rows). Objects are correctly localised and the global scene texture is well-preserved, despite the input being pure text.
-            </p>
-          </div>
-        </div>
-      </div>
+      Stage One: RSOD F1=0.9655 (Precision=0.9899, Recall=0.9423), YOLOv10 F1=0.9379
+      Stage One: RescueNet F1=0.8022 (Precision=0.9402, Recall=0.6995), YOLOv10 F1=0.7277
+      Stage Two: RSOD FID=42.87, SSIM=0.1482; RescueNet FID=40.79, SSIM=0.1513
+      Baseline MMO-IG: RSOD FID=45.39 SSIM=0.1176; RescueNet FID=51.21 SSIM=0.1221
     </div>
   </section>
 
-  <!-- ==================== CONCLUSION ==================== -->
+  ==================== CONCLUSION ====================
   <section class="section" style="background:#fff;">
     <div class="container is-max-desktop">
       <div class="columns is-centered has-text-centered">
@@ -758,15 +813,20 @@
           <h2 class="title is-3 section-title">Conclusion</h2>
           <div class="section-divider"></div>
           <p style="font-size:1.02rem;line-height:1.85;color:#334155;text-align:justify;">
-            This work presents <strong>RSSC</strong>, an efficient semantic communication method for remote sensing visual information. Stage One encodes remote sensing imagery into descriptive text and bounding box coordinates; Stage Two reconstructs the visual content with high quality from this information, reducing the transmitted data to the <strong>byte level</strong>. This offers broad application potential in remote sensing scenarios with communication limitations, such as satellite downlinks and post-disaster UAV operations.
+            This work presents RSSC, an efficient semantic communication method for remote sensing visual information. Stage One encodes remote sensing imagery into descriptive text and bounding box coordinates; Stage Two reconstructs the visual content with high quality from this information, reducing the transmitted data to the byte level. This offers broad application potential in remote sensing scenarios with communication limitations, such as satellite downlinks and post-disaster UAV operations.
           </p>
           <p style="font-size:1.02rem;line-height:1.85;color:#334155;text-align:justify;margin-top:1rem;">
-            In quantitative evaluation, RSSC achieves state-of-the-art reconstruction quality among layout-guided remote sensing image generation methods, and the highest information compression ratio among remote sensing semantic communication methods. With INT8 quantization, Stage One requires approximately 9.2 GB GPU memory — within the range of modern edge computing platforms on satellites and professional UAVs — indicating practical deployment potential.
+            In quantitative evaluation, RSSC achieves state-of-the-art reconstruction quality among layout-guided remote sensing image generation methods, and the highest information compression ratio among remote sensing semantic communication methods. With INT8 quantization, Stage One requires approximately 9.2 GB GPU memory - within the range of modern edge computing platforms on satellites and professional UAVs - indicating practical deployment potential.
           </p>
         </div>
       </div>
     </div>
   </section>
+
+  ================================================================
+  END OF ORIGINAL PAGE CONTENT
+  ================================================================
+  -->
 
   </main>
 
